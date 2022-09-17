@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.isscloud.xdclass.mapper.EpisodeMapper">
+    <select id="selectEpisodesByChapterId" resultType="Episode">
+        select * from episode where chapter_id = #{chapterId} order by num
+    </select>
+
+    <select id="selectEpisodesByVideoId" resultType="Episode">
+        select * from episode where chapter_id = #{videoId} order by num
+    </select>
+
+    <select id="getFirstEpisodeByVideoId" resultType="Episode">
+        select * from episode where video_id = #{videoId} order by num LIMIT 0,1
+    </select>
+</mapper>

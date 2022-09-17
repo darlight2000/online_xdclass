@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:名称空间，一般需要保持全局唯一，最好是和mapper的接口一致
+这样就可以映射SQL语句到对应到方法名称和参数返回类型
+mybatis是使用接口动态代理，这里必须为全路径
+-->
+<mapper namespace="site.isscloud.xdclass.mapper.ChapterMapper">
+
+    <resultMap id="ChapterDetailResultMapperLay" type="Chapter">
+        <id column="id" jdbcType="INTEGER" property="id"></id>
+        <result column="video_id" property="videoId" />
+        <result column="title" property="title" />
+        <result column="ordered" property="ordered" />
+        <result column="create_time"  property="createTime" />
+        <collection property="episodeList" ofType="Episode" column="id" select="site.isscloud.xdclass.mapper.EpisodeMapper.selectEpisodesByChapterId"/>
+    </resultMap>
+
+    <select id="selectChaptersByVideoIdLazy" resultMap="ChapterDetailResultMapperLay">
+        select * from chapter where video_id = #{videoId} order by ordered
+    </select>
+
+    <select id="getChapterDetailByIdLazy" resultMap="ChapterDetailResultMapperLay">
+        select * from chapter where id = #{id} LIMIT 0,1
+    </select>
+
+</mapper>

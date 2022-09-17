@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:名称空间，一般需要保持全局唯一，最好是和mapper的接口一致
+这样就可以映射SQL语句到对应到方法名称和参数返回类型
+mybatis是使用接口动态代理，这里必须为全路径
+-->
+<mapper namespace="site.isscloud.xdclass.mapper.VideoMapper">
+    <!--这里的listVideo与VideoMapper.listVideo方法保持一致-->
+    <select id="listVideo" resultType="Video">
+        select * from video
+    </select>
+
+    <select id="listIndexBanner" resultType="VideoBanner">
+        select * from video_banner order by weight desc
+    </select>
+    <resultMap id="VideoDetailResultMapperLazy" type="Video">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="summary" jdbcType="VARCHAR" property="summary" />
+        <result column="cover_img" jdbcType="VARCHAR" property="coverImg" />
+        <result column="price" jdbcType="INTEGER" property="price" />
+        <result column="point" jdbcType="DOUBLE" property="point" />
+        <result column="create_time" property="createTime" />
+        <!--
+        property 填写pojo类中集合类属性的名称
+        ofType 集合⾥里里⾯面的pojo对象
+        -->
+        <collection property="chapterList" ofType="Chapter" column="id" select="site.isscloud.xdclass.mapper.ChapterMapper.selectChaptersByVideoIdLazy"/>
+    </resultMap>
+    
+    <select id="getVideoDetailByIdLazy" resultMap="VideoDetailResultMapperLazy">
+        select * from video where id = #{id} LIMIT 0,1
+    </select>
+    
+</mapper>

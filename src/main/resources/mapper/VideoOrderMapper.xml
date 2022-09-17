@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:名称空间，一般需要保持全局唯一，最好是和mapper的接口一致
+这样就可以映射SQL语句到对应到方法名称和参数返回类型
+mybatis是使用接口动态代理，这里必须为全路径
+-->
+<mapper namespace="site.isscloud.xdclass.mapper.VideoOrderMapper">
+    <select id="getVideoOrderByUserIdAndVideoIdAndState" resultType="VideoOrder">
+        select * from video_order where user_id = #{userId} and video_id = #{videoId} and state = #{state} LIMIT 0,1
+    </select>
+    <select id="getVideoOrderById" resultType="VideoOrder">
+        select * from video_order where id = #{id} LIMIT 0,1
+    </select>
+    <select id="selectVideoOrdersByUserId" resultType="VideoOrder">
+        select * from video_order where user_id = #{userId} order by create_time desc
+    </select>
+    <insert id="add" parameterType="VideoOrder" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into `video_order` (`out_trade_no`,`state`,`total_fee`,`video_id`,`user_id`,`video_title`,`video_img`,`create_time`)
+        values (#{outTradeNo},#{state},#{totalFee},#{videoId},#{userId},#{videoTitle},#{videoImg},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

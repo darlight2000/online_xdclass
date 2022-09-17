@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:名称空间，一般需要保持全局唯一，最好是和mapper的接口一致
+这样就可以映射SQL语句到对应到方法名称和参数返回类型
+mybatis是使用接口动态代理，这里必须为全路径
+-->
+<mapper namespace="site.isscloud.xdclass.mapper.PlayRecordMapper">
+    <select id="getPlayRecordByUserIdAndVideoId" resultType="PlayRecord">
+        select * from play_record where user_id = #{userId} and video_id = #{videoId} LIMIT 0,1
+    </select>
+    <select id="getPlayRecordById" resultType="PlayRecord">
+        select * from play_record where id = #{id} LIMIT 0,1
+    </select>
+    <insert id="add" parameterType="PlayRecord" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into `play_record` (`user_id`,`video_id`,`episode_id`,`current_num`,`create_time`)
+        values (#{userId},#{videoId},#{episodeId},#{currentNum},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>
