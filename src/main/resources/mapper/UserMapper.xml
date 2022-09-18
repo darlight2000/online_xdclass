@@ -16,7 +16,11 @@
     </select>
 
     <select id="getUserByPhoneAndPwd" resultType="User">
-        select <include refid="base_field"/> from user where phone = #{phone} and pwd=#{pwd} LIMIT 0,1
+        select <include refid="base_field"/> from user where phone = #{phone} and pwd = #{pwd} LIMIT 0,1
+    </select>
+
+    <select id="getUserByPhoneOrName" resultType="User">
+        select <include refid="base_field"/> from user where phone = #{phone} or name = #{name} LIMIT 0,1
     </select>
 
     <insert id="add" parameterType="User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">

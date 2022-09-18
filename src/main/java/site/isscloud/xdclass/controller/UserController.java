@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import site.isscloud.xdclass.model.entity.User;
 import site.isscloud.xdclass.model.entity.VideoOrder;
 import site.isscloud.xdclass.model.request.LoginRequest;
+import site.isscloud.xdclass.model.request.RegisterRequest;
 import site.isscloud.xdclass.service.UserService;
 import site.isscloud.xdclass.service.VideoOrderService;
 import site.isscloud.xdclass.utils.JUtils;
@@ -33,15 +34,20 @@ public class UserController {
 
     /**
      * 注册
+     *
      * @param user
      * @param level
      * @return
      */
     @PostMapping("register")
     // 注意：@RequestBody是post请求json数据时，需要加的注解
-    public JsonData register(@RequestBody User user) {
+    public JsonData register(@RequestBody RegisterRequest user) {
         user.setPwd(JUtils.MD5(user.getPwd()));
-        Integer rows = userService.save(user);
+        User newUser = new User();
+        newUser.setPhone(user.getPhone());
+        newUser.setPwd(user.getPwd());
+        newUser.setName(user.getName());
+        Integer rows = userService.save(newUser);
         if (rows == null || rows != 1) {
             JsonData.buildError("注册失败");
         }

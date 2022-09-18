@@ -29,6 +29,13 @@ public class UserServiceIpml implements UserService {
     public Integer save(User user) {
         if (user.getId() == null) {
             if (user.getName() != null && user.getPwd() != null && user.getPhone() != null) {
+                User u = userMapper.getUserByPhoneOrName(user.getPhone(), user.getName());
+                if (u != null) {
+                    throw new BizException(-1, "存在相同用户名或者电话的用户");
+                }
+                int i = (int)(Math.random()*(20+1));
+                user.setHeadImg("https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/"+i+".jpeg");
+                user.setCreateTime(new Date());
                 return userMapper.add(user);
             } else {
                 throw new BizException(-1, "新增用户参数异常");
