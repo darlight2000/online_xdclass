@@ -62,8 +62,9 @@ public class UserController {
             return JsonData.buildError("登录失败，用户名或密码错误");
         }
         String token = JWTUtils.geneJsonWebToken(user);
-        Map<String,String> map = new HashMap<>();
+        Map<String,Object> map = new HashMap<>();
         map.put("token", token);
+        map.put("user", user);
         return JsonData.buildSuccess(map);
     }
 

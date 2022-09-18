@@ -88,11 +88,13 @@ public class VideoOrderServiceIpml implements VideoOrderService {
                 Integer flag = videoOrderMapper.add(videoOrder);
                 if(flag == 1) {
                     Episode episode = episodeService.getFirstEpisodeByVideoId(videoOrder.getVideoId());
-                    PlayRecord playRecord = new PlayRecord();
-                    playRecord.setEpisodeId(episode.getId());
-                    playRecord.setVideoId(videoOrder.getVideoId());
-                    playRecord.setUserId(videoOrder.getUserId());
-                    flag = playRecordService.save(playRecord);
+                    if (episode != null) {
+                        PlayRecord playRecord = new PlayRecord();
+                        playRecord.setEpisodeId(episode == null ? 0 : episode.getId());
+                        playRecord.setVideoId(videoOrder.getVideoId());
+                        playRecord.setUserId(videoOrder.getUserId());
+                        flag = playRecordService.save(playRecord);
+                    }
                 }
                 return flag;
             } else {
